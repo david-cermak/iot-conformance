@@ -1,3 +1,9 @@
 [submodule "deps/net-test-suites"]
 	path = deps/net-test-suites
 	url = https://github.com/intel/net-test-suites.git
+[submodule "deps/idf"]
+	path = deps/idf
+	url = https://github.com/espressif/esp-idf.git
+[submodule "deps/protocols"]
+	path = deps/protocols
+	url = https://github.com/espressif/esp-protocols.git
