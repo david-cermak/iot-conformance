@@ -37,3 +37,16 @@ flowchart LR
 
 Notes
 - TITAN’s IPL4asp is vendored at `deps/titan.TestPorts.IPL4asp` and used by the MQTT suite.
+
+**Licensing**
+- This repository is Apache-2.0 licensed. Third-party code in `deps/` carries its own licenses. Summary:
+  - `deps/idf` (ESP-IDF): Apache-2.0. See `deps/idf/LICENSE`.
+  - `deps/protocols` (ESP-Protocols): primarily Apache-2.0 components; some third-party subcomponents (e.g., `libwebsockets`) include permissive licenses (MIT/BSD) or CC0 for examples. See component `LICENSE`/SPDX markers and `deps/protocols/components/libwebsockets/LICENSE.txt`.
+  - `deps/titan.TestPorts.IPL4asp`: Eclipse Public License v2.0. See `deps/titan.TestPorts.IPL4asp/LICENSE` and per-file headers.
+  - `deps/iottestware.mqtt`: Eclipse Public License v1.0. See `deps/iottestware.mqtt/LICENSE`.
+  - `deps/net-test-suites`: GNU LGPL-2.1 (see `deps/net-test-suites/COPYING.txt`).
+
+Compatibility and obligations (non-legal summary):
+- Apache-2.0 is permissive and generally compatible with EPL and LGPL when used as separate works. When distributing binaries that incorporate EPL/LGPL code, ensure you comply with their terms (e.g., provide notices, preserve license texts, and for LGPL-2.1 provide object files or a relink mechanism if you distribute a binary that statically links LGPL code).
+- TITAN test suites compile TTCN-3 modules to C++ and link them into executables. If your build includes EPL- or LGPL-licensed TTCN modules, treat the resulting executable as a combined work and follow those licenses’ distribution requirements.
+- This summary is informational only and not legal advice. Review each dependency’s license and your distribution model to determine obligations.
