@@ -1,38 +1,26 @@
-# MQTT Conformance Suite (Host)
+# MQTT Conformance (Overview)
 
-This suite runs MQTT client logic on Linux using ESP-IDF’s `esp-mqtt` and a mock TCP transport over UDP. No target firmware is used in this step.
+Two parts:
+- Host client prototype (`host/`): ESP-IDF’s `esp-mqtt` targeting Linux with a UDP-backed transport.
+- TTCN-3 suite (`suite/`): Minimal CONNECT/CONNACK validation using TITAN IPL4asp over UDP.
 
-## Layout
-- `host/`: IDF project targeting Linux. Builds `esp-mqtt` and a mock `tcp_transport` that forwards bytes via UDP (`7771` in, `7777` out).
-- `suite/`: TTCN-3 suite placeholder (to be added in the next step).
+Layout
+- `host/`: IDF project; optional for early TTCN testing if you have another client.
+- `suite/`: Ready-to-build TTCN-3 suite; includes a build helper.
 
-## Build (Linux target)
-1) Ensure submodules are initialized and `IDF_PATH` points to `deps/idf`:
-   - `git submodule update --init --recursive`
-   - `export IDF_PATH="$(pwd)/deps/idf" && . "$IDF_PATH/export.sh"`
-2) Configure Linux target (from `mqtt/host`):
-   - `idf.py --preview set-target linux`
-3) Build:
-   - `idf.py build`
+Build TTCN-3 suite
+- Prereqs: `sudo apt install eclipse-titan`; `git submodule update --init --recursive`.
+- Build from `mqtt/suite`:
+  - `./make.sh`
+  - This vendors IPL4asp from `deps/titan.TestPorts.IPL4asp` and links `IPL4asp_PT.cc`.
 
-Notes
-- Linux compatibility layers are used from `deps/protocols/common_components/linux_compat/{freertos,esp_timer}`.
-- The project overrides IDF’s `tcp_transport` via a local component providing UDP-based transport.
+Run
+- Send an MQTT CONNECT to `127.0.0.1:7777` (any client/source port).
+- Execute the suite: `ttcn3_start mqtt_connect mqtt_connect.cfg`.
+- The suite replies CONNACK to the sender’s source port.
 
-## Run
-In one terminal (server replying CONNACK):
-- `python3 host/scripts/mqtt_udp_server.py`  (binds `127.0.0.1:7777`)
+Clean
+- `cd mqtt/suite && ./make.sh clean` removes generated `.cc/.hh`, objects, depfiles, logs, binary, and Makefile.
 
-In another terminal (client):
-- `idf.py monitor`  (from `mqtt/host`) or run the built ELF in `build/`.
-
-Environment overrides
-- `MQTT_UDP_DST` (default `127.0.0.1`)
-- `MQTT_UDP_OUT` (default `7777`, client→server)
-- `MQTT_UDP_IN`  (default `7771`, server→client)
-
-Expected result
-- Client logs `MQTT_EVENT_CONNECTED` after exchanging CONNECT/CONNACK via UDP.
-
-Next step
-- Add TTCN-3 suite in `suite/` to drive scenarios against the host client.
+Host client (optional)
+- If you want to drive `esp-mqtt` over UDP, see `mqtt/host` (Linux target: `idf.py --preview set-target linux`).

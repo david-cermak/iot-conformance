@@ -7,3 +7,9 @@
 [submodule "deps/protocols"]
 	path = deps/protocols
 	url = https://github.com/espressif/esp-protocols.git
+[submodule "deps/iottestware.mqtt"]
+	path = deps/iottestware.mqtt
+	url = https://github.com/eclipse-iottestware/iottestware.mqtt.git
+[submodule "deps/titan.TestPorts.IPL4asp"]
+	path = deps/titan.TestPorts.IPL4asp
+	url = https://gitlab.eclipse.org/eclipse/titan/titan.TestPorts.IPL4asp.git
